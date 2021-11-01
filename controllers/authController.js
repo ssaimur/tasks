@@ -22,9 +22,9 @@ authControllers.register = (table) => {
 
     const { name, phone, address } = req.body;
 
-    const q = `INSERT INTO ${table} (name, phone, password, address) VALUES ( '${name}', '${phone}', '${hashedPassword}', '${address}' )`;
+    const q = `INSERT INTO ${table} (name, phone, password, address) OUTPUT Inserted.name VALUES ( '${name}', '${phone}', '${hashedPassword}', '${address}' )`;
 
-    db.query(q, (err) => {
+    db.query(q, (err, result) => {
       if (err) {
         next(new CustomError(err.message, 500, err.code));
       } else {
@@ -35,9 +35,7 @@ authControllers.register = (table) => {
           httpOnly: true,
           maxAge: maxAge * 1000,
         });
-        res
-          .status(200)
-          .json({ success: true, message: 'User successfully created' });
+        res.status(200).json({ success: true, data: result });
       }
     });
   };

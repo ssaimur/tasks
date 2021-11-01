@@ -28,7 +28,7 @@ controller.managerUploadProduct = (req, res, next) => {
 controller.managerGetAllProduct = (req, res, next) => {
   const { phone } = req.params;
 
-  const q = `SELECT * FROM products WHERE uploader_phone='${phone}'`;
+  const q = `SELECT * FROM products WHERE uploader_phone='${/01248963241/i}'`;
   db.query(q, (err, result) => {
     if (err) {
       next(new CustomError(err.message, 500, err.code));
